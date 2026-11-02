@@ -1,0 +1,20 @@
+name: superagent demo request
+on:
+  pull_request:
+    types: [opened]
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+jobs:
+  request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ask the superagent for a copy fix
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body-file - <<'BODY'
+          @createshinnsllc-droid please fix the typo in `DEMO.md` on this pull request: change `teh` to `the`. Then open a pull request with the fix.
+          BODY
